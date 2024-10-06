@@ -14,16 +14,16 @@ namespace Hackaton.shared.Entities
         [Display(Name = "Premio Obtenido")]
         [Required]
         [MaxLength(100, ErrorMessage = "EL nombre debe ser menor a 100 caracteres")]
-        public string PremioObtenido { get; set; }
+        public string Premio_Obtenido { get; set; }
 
+        [Display(Name = "Puesto Obtenido")]
+        [Required]
+        public string Puesto { get; set; }
 
-
-
-
-
-
-
-
+        [Display(Name = "Id Hackaton")]
+        [Required]
+        [MaxLength(50, ErrorMessage = "EL nombre debe ser menor a 50 caracteres")]
+        public string IdHackaton { get; set; }
 
     }
 }
