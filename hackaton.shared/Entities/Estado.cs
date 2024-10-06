@@ -14,6 +14,5 @@ namespace Hackaton.shared.Entities
         [Required]
         [MaxLength(50, ErrorMessage = "EL Estado debe ser menor a 50 caracteres")]
         public string estado { get; set; }
-
     }
 }
