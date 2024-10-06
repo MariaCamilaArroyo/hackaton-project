@@ -35,5 +35,7 @@ namespace Hackaton.shared.Entities
         [JsonIgnore]
         public Team Teams { get; set; }
         public int TeamId { get; set; }
+
+        public ICollection<Evaluation> Evaluations { get; set; }
     }
 }

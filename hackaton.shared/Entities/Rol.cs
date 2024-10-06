@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hackaton.shared.Entities
 {
-    internal class Rol
+    public class Rol
     {
         public int Id { get; set; }
         [Display(Name = "Rol")]
