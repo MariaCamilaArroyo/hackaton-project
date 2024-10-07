@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hackaton.shared.Entities
 {
-    public class Hackaton
+    public class HackatonTable
     {
 
         public int Id { get; set; }

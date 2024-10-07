@@ -22,7 +22,7 @@ namespace Hackaton.shared.Entities
         public string Position { get; set; }
 
         [JsonIgnore]
-        public Hackaton Hackatons { get; set; }
+        public HackatonTable Hackatons { get; set; }
         public int HackatonId { get; set; }
 
 
