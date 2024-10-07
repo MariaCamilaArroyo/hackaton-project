@@ -1,3 +1,7 @@
+using Hackaton.API.Data;
+using Microsoft.EntityFrameworkCore;
+using Veterinary.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.

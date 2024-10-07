@@ -16,7 +16,7 @@ namespace Hackaton.API.Data
         public DbSet<Participante> Participantes { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Rol> Roles { get; set; }
-        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Status> Status { get; set; }
         public DbSet<Team> Teams { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,4 +25,4 @@ namespace Hackaton.API.Data
     }
 
 }
-}
+
