@@ -19,14 +19,15 @@ namespace Hackaton.shared.Entities
         public int value { get; set; }
 
         [Display(Name = "Comentarios")]
-        public int comments { get; set; }
+        public string comments { get; set; }
 
         [JsonIgnore]
-        public Mentor Mentors { get; set; }
+        public Mentor Mentor { get; set; } 
         public int MentorId { get; set; }
 
         [JsonIgnore]
-        public Project Projects { get; set; }
+        public Project Project { get; set; }
         public int ProjectId { get; set; }
     }
 }
+

@@ -1,106 +1,70 @@
-﻿using Hackaton.shared.Entities;
+﻿using Hackaton.API.Data;
+using Hackaton.shared.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Hackaton.API.Controllers
 {
+
+    [ApiController]
+    [Route("/api/evaluations")]
     public class EvaluationController : Controller
     {
-        private static List<Evaluation> evaluations = new List<Evaluation>();
+        private readonly DataContext _context;
 
-        // GET: /Evaluation/
-        public IActionResult Index()
+        public EvaluationController(DataContext context)
         {
-            return View(evaluations);
+            _context = context;
         }
 
-        // GET: /Evaluation/Details/5
-        public IActionResult Details(int id)
+        [HttpGet]
+
+        public async Task<ActionResult> GetAll()
         {
-            var evaluation = evaluations.FirstOrDefault(e => e.Id == id);
-            if (evaluation == null)
+            return Ok(await _context.Evaluations.ToListAsync());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetById(int id)
+        {
+            var Evaluation = await _context.Evaluations.FirstOrDefaultAsync(x => x.Id == id);
+            if (Evaluation == null)
             {
                 return NotFound();
             }
-            return View(evaluation);
+            return Ok(Evaluation);
         }
 
-        // GET: /Evaluation/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: /Evaluation/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Evaluation evaluation)
+        public async Task<ActionResult> Create(Evaluation evaluation)
         {
-            if (ModelState.IsValid)
-            {
-                evaluation.Id = evaluations.Count + 1;
-                evaluations.Add(evaluation);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(evaluation);
+            _context.Evaluations.Add(evaluation);
+            await _context.SaveChangesAsync();
+            return Ok(evaluation);
         }
 
-        // GET: /Evaluation/Edit/5
-        public IActionResult Edit(int id)
+        [HttpPut]
+        public async Task<ActionResult> Update(Evaluation evaluation)
         {
-            var evaluation = evaluations.FirstOrDefault(e => e.Id == id);
-            if (evaluation == null)
+            _context.Evaluations.Update(evaluation);
+            await _context.SaveChangesAsync();
+            return Ok(evaluation);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var affectedRows = await _context.Evaluations
+                .Where(p => p.Id == id)
+                .ExecuteDeleteAsync();
+
+            if (affectedRows == 0)
             {
                 return NotFound();
             }
-            return View(evaluation);
-        }
-
-        // POST: /Evaluation/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Evaluation evaluation)
-        {
-            var existingEvaluation = evaluations.FirstOrDefault(e => e.Id == id);
-            if (existingEvaluation == null)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                existingEvaluation.Id = evaluation.Id;
-                existingEvaluation.ProjectId = evaluation.ProjectId;
-                existingEvaluation.value = evaluation.value;
-                existingEvaluation.comments = evaluation.comments;
-                return RedirectToAction(nameof(Index));
-            }
-            return View(evaluation);
-        }
-
-        // GET: /Evaluation/Delete/5
-        public IActionResult Delete(int id)
-        {
-            var evaluation = evaluations.FirstOrDefault(e => e.Id == id);
-            if (evaluation == null)
-            {
-                return NotFound();
-            }
-            return View(evaluation);
-        }
-
-        // POST: /Evaluation/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var evaluation = evaluations.FirstOrDefault(e => e.Id == id);
-            if (evaluation != null)
-            {
-                evaluations.Remove(evaluation);
-            }
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
 }
