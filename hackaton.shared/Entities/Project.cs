@@ -12,30 +12,23 @@ namespace Hackaton.shared.Entities
     {
         public int Id { get; set; }
 
-        [Display(Name = "Nombre del proyecto")]
+        [Display(Name = "Nombre del Proyecto")]
         [Required]
-        public int Name  { get; set; }
+        public string Name { get; set; }
 
-        [Display(Name = "Descripcion del proyecto")]
+        [Display(Name = "Descripción")]
         public string Description { get; set; }
 
-        [Display(Name = "Fecha de entrega del proyecto")]
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime DateLocal => DeliveryDate.ToLocalTime();
+        [Display(Name = "Fecha de entrega")]
         public DateTime DeliveryDate { get; set; }
 
-        [Display(Name = "Puntuación del proyecto")]
+        [Display(Name = "Puntuación")]
         public string Score { get; set; }
 
-        [JsonIgnore]
-        public Status Statuses { get; set; }
+        [Display(Name = "Estado")]
         public int StatusId { get; set; }
-
-        [JsonIgnore]
-        public Team Teams { get; set; }
-        public int TeamId { get; set; }
 
         public ICollection<Evaluation> Evaluations { get; set; }
     }
 }
+

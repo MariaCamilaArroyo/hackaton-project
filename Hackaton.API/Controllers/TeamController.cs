@@ -1,105 +1,69 @@
-﻿using Hackaton.shared.Entities;
+﻿using Hackaton.API.Data;
+using Hackaton.shared.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Hackaton.API.Controllers
 {
+    [ApiController]
+    [Route("/api/teams")]
     public class TeamController : Controller
     {
-        private static List<Team> teams = new List<Team>();
+        private readonly DataContext _context;
 
-        // GET: /team/
-        public IActionResult Index()
+        public TeamController(DataContext context)
         {
-            return View(teams);
+            _context = context;
         }
 
-        // GET: /Team/Details/5
-        public IActionResult Details(int id)
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
         {
-            var team = teams.FirstOrDefault(e => e.Id == id);
+            return Ok(await _context.Teams.ToListAsync());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetById(int id)
+        {
+            var team = await _context.Teams.FirstOrDefaultAsync(x => x.Id == id);
             if (team == null)
             {
                 return NotFound();
             }
-            return View(team);
+            return Ok(team);
         }
 
-        // GET: /Equipo/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: /Equipo/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Team team)
+        public async Task<ActionResult> Create(Team team)
         {
-            if (ModelState.IsValid)
-            {
-                team.Id = teams.Count + 1;
-                teams.Add(team);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(team);
+            _context.Teams.Add(team);
+            await _context.SaveChangesAsync();
+            return Ok(team);
         }
 
-        // GET: /Team/Edit/5
-        public IActionResult Edit(int id)
+        [HttpPut]
+        public async Task<ActionResult> Update(Team team)
         {
-            var equipo = teams.FirstOrDefault(e => e.Id == id);
-            if (teams == null)
+            _context.Teams.Update(team);
+            await _context.SaveChangesAsync();
+            return Ok(team);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var affectedRows = await _context.Teams
+                .Where(p => p.Id == id)
+                .ExecuteDeleteAsync();
+
+            if (affectedRows == 0)
             {
                 return NotFound();
             }
-            return View(teams);
-        }
-
-        // POST: /Team/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Team team)
-        {
-            var existingEquipo = teams.FirstOrDefault(e => e.Id == id);
-            if (existingEquipo == null)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                existingEquipo.Name = team.Name;
-                existingEquipo.MentorId = team.MentorId;
-                existingEquipo.HackatonId = team.HackatonId;
-                return RedirectToAction(nameof(Index));
-            }
-            return View(team);
-        }
-
-        // GET: /Teams/Delete/5
-        public IActionResult Delete(int id)
-        {
-            var equipo = teams.FirstOrDefault(e => e.Id == id);
-            if (teams == null)
-            {
-                return NotFound();
-            }
-            return View(teams);
-        }
-
-        // POST: /Team/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var team = teams.FirstOrDefault(e => e.Id == id);
-            if (teams != null)
-            {
-                teams.Remove(team);
-            }
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
+
 }

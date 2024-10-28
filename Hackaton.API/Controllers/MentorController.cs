@@ -1,105 +1,69 @@
-﻿using Hackaton.shared.Entities;
+﻿using Hackaton.API.Data;
+using Hackaton.shared.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Hackaton.API.Controllers
 {
+    [ApiController]
+    [Route("/api/mentors")]
     public class MentorController : Controller
     {
-        private static List<Mentor> mentors = new List<Mentor>();
+        private readonly DataContext _context;
 
-        // GET: /Mentor/
-        public IActionResult Index()
+        public MentorController(DataContext context)
         {
-            return View(mentors);
+            _context = context;
         }
 
-        // GET: /Mentor/Details/5
-        public IActionResult Details(int id)
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
         {
-            var mentor = mentors.FirstOrDefault(m => m.Id == id);
+            return Ok(await _context.Mentors.ToListAsync());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetById(int id)
+        {
+            var mentor = await _context.Mentors.FirstOrDefaultAsync(x => x.Id == id);
             if (mentor == null)
             {
                 return NotFound();
             }
-            return View(mentor);
+            return Ok(mentor);
         }
 
-        // GET: /Mentor/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: /Mentor/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Mentor mentor)
+        public async Task<ActionResult> Create(Mentor mentor)
         {
-            if (ModelState.IsValid)
-            {
-                mentor.Id = mentors.Count + 1;
-                mentors.Add(mentor);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(mentor);
+            _context.Mentors.Add(mentor);
+            await _context.SaveChangesAsync();
+            return Ok(mentor);
         }
 
-        // GET: /Mentor/Edit/5
-        public IActionResult Edit(int id)
+        [HttpPut]
+        public async Task<ActionResult> Update(Mentor mentor)
         {
-            var mentor = mentors.FirstOrDefault(m => m.Id == id);
-            if (mentor == null)
+            _context.Mentors.Update(mentor);
+            await _context.SaveChangesAsync();
+            return Ok(mentor);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var affectedRows = await _context.Mentors
+                .Where(p => p.Id == id)
+                .ExecuteDeleteAsync();
+
+            if (affectedRows == 0)
             {
                 return NotFound();
             }
-            return View(mentor);
-        }
-
-        // POST: /Mentor/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Mentor mentor)
-        {
-            var existingMentor = mentors.FirstOrDefault(m => m.Id == id);
-            if (existingMentor == null)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                existingMentor.expertise = mentor.expertise;
-                existingMentor.Name = mentor.Name;
-                existingMentor.identificationNumber = mentor.identificationNumber;
-                return RedirectToAction(nameof(Index));
-            }
-            return View(mentor);
-        }
-
-        // GET: /Mentor/Delete/5
-        public IActionResult Delete(int id)
-        {
-            var mentor = mentors.FirstOrDefault(m => m.Id == id);
-            if (mentor == null)
-            {
-                return NotFound();
-            }
-            return View(mentor);
-        }
-
-        // POST: /Mentor/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var mentor = mentors.FirstOrDefault(m => m.Id == id);
-            if (mentor != null)
-            {
-                mentors.Remove(mentor);
-            }
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
 }
+

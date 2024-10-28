@@ -13,15 +13,17 @@ namespace Hackaton.shared.Entities
 
         [Display(Name = "Nombre del Mentor")]
         [Required]
-        [MaxLength(200, ErrorMessage = "El nombre del mentor debe ser mas corto")]
+        [MaxLength(200, ErrorMessage = "El nombre del mentor debe ser más corto")]
         public string Name { get; set; }
 
-        [Display(Name = "área de experiencia")]
+        [Display(Name = "Área de experiencia")]
         [Required]
         public string expertise { get; set; }
 
-        [Display(Name = "Numero de documento")]
+        [Display(Name = "Número de documento")]
         [Required]
         public int identificationNumber { get; set; }
+
+        public ICollection<Evaluation> Evaluations { get; set; }
     }
 }
