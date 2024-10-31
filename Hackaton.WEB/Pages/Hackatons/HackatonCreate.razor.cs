@@ -36,6 +36,6 @@ public partial class HackatonCreate
     private void Return()
     {
          HackatonForm!.FormPostedSuccessfully = true;
-        NavigationManager.NavigateTo("/Hackatons");
+        NavigationManager.NavigateTo("/Hackaton");
     }
 }
