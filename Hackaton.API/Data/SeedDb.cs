@@ -2,7 +2,7 @@
 using Hackaton.shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Veterinary.API.Data
+namespace Hackaton.API.Data
 {
     public class SeedDb
     {

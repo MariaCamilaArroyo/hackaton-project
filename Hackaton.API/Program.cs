@@ -1,6 +1,6 @@
 using Hackaton.API.Data;
 using Microsoft.EntityFrameworkCore;
-using Veterinary.API.Data;
+using Hackaton.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
