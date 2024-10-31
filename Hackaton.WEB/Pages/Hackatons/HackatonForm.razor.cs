@@ -16,6 +16,7 @@ public partial class HackatonForm
     }
 
     [EditorRequired, Parameter] public HackatonTable Hackaton { get; set; } = null!;
+    [EditorRequired, Parameter] public EventCallback OnValidSubmit { get; set; }
     [EditorRequired, Parameter] public EventCallback ReturnAction { get; set; }
 
     public bool FormPostedSuccessfully { get; set; } = false;
