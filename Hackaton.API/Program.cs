@@ -28,10 +28,6 @@ void SeedData(WebApplication app)
 }
 
 
-
-
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -45,9 +41,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 
-//Permisos para consumir el api
 app.UseCors(x => x
-
 .AllowAnyMethod()
 .AllowAnyHeader()
 .SetIsOriginAllowed(origin => true)

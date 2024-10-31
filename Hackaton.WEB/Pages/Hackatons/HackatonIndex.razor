@@ -1,0 +1,47 @@
+﻿@page "/Hackaton"
+
+<h3>Paises</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/Hackaton/create">Nuevo Hackaton</a>
+</div>
+
+<GenericList MyList="Hackatons">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Hackaton</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hackaton in Hackatons!)
+                {
+                    <tr>
+                        <td>
+                            @hackaton.Name
+                        </td>
+                        <td>
+                            @hackaton.InitialDate
+                        </td>
+                        <td>
+                            @hackaton.FinalDate
+                        </td>
+                        <td>
+                            @hackaton.Topic
+                        </td>
+                        <td>
+                            @hackaton.Organizer
+                        </td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+
