@@ -1,0 +1,12 @@
+﻿@page "/hackaton/edit/{Id:int}"
+
+<h3>Editar Hackaton</h3>
+
+@if (hackaton is null)
+{
+    <Loading />
+}
+else
+{
+    <HackatonForm @ref="hackatonForm" Hackaton="hackaton" OnValidSubmit="EditAsync" ReturnAction="Return" />
+}
